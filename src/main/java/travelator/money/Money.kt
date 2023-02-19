@@ -1,73 +1,51 @@
-package travelator.money;
+package travelator.money
 
-import java.math.BigDecimal;
-import java.util.Currency;
-import java.util.Objects;
+import java.math.BigDecimal
+import java.util.*
 
-import static java.math.BigDecimal.ZERO;
+class Money private constructor(
+    val amount: BigDecimal,
+    val currency: Currency
+) {
 
-public class Money {
-    private final BigDecimal amount;
-    private final Currency currency;
-
-    private Money(BigDecimal amount, Currency currency) {
-        this.amount = amount;
-        this.currency = currency;
+    override fun equals(o: Any?): Boolean {
+        if (this === o) return true
+        if (o == null || javaClass != o.javaClass) return false
+        val money = o as Money
+        return amount == money.amount && currency == money.currency
     }
 
-    public static Money of(BigDecimal amount, Currency currency) {
-        return new Money(
-                amount.setScale(currency.getDefaultFractionDigits()),
-                currency);
+    override fun hashCode(): Int {
+        return Objects.hash(amount, currency)
     }
 
-
-    public static Money of(String amountStr, Currency currency) {
-        return Money.of(new BigDecimal(amountStr), currency);
+    override fun toString(): String {
+        return amount.toString() + " " + currency.currencyCode
     }
 
-    public static Money of(int amount, Currency currency) {
-        return Money.of(new BigDecimal(amount), currency);
+    fun add(that: Money): Money {
+        require(currency == that.currency) { "cannot add Money values of different currencies" }
+        return Money(amount.add(that.amount), currency)
     }
 
-    public static Money zero(Currency userCurrency) {
-        return Money.of(ZERO, userCurrency);
-    }
-
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Money money = (Money) o;
-        return amount.equals(money.amount) &&
-                currency.equals(money.currency);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(amount, currency);
-    }
-
-    @Override
-    public String toString() {
-        return amount.toString() + " " + currency.getCurrencyCode();
-    }
-
-    public Money add(Money that) {
-        if (!this.currency.equals(that.currency)) {
-            throw new IllegalArgumentException(
-                    "cannot add Money values of different currencies");
+    companion object {
+        fun of(amount: BigDecimal, currency: Currency): Money {
+            return Money(
+                amount.setScale(currency.defaultFractionDigits),
+                currency
+            )
         }
 
-        return new Money(this.amount.add(that.amount), this.currency);
+        fun of(amountStr: String?, currency: Currency): Money {
+            return of(BigDecimal(amountStr), currency)
+        }
+
+        fun of(amount: Int, currency: Currency): Money {
+            return of(BigDecimal(amount), currency)
+        }
+
+        fun zero(userCurrency: Currency): Money {
+            return of(BigDecimal.ZERO, userCurrency)
+        }
     }
 }
