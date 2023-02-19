@@ -2,11 +2,11 @@ package travelator
 
 import java.time.Duration
 
-fun longestLegOver(legs: List<Leg>, duration: Duration) =
-    legs.maxByOrNull(Leg::plannedDuration)
-        ?.let {
-            if (it.plannedDuration > duration) {
-                it
-            } else
-                null
-        }
+fun longestLegOver(legs: List<Leg>, duration: Duration) : Leg? {
+    val longestLeg = legs.maxByOrNull(Leg::plannedDuration)
+    return when {
+        longestLeg == null -> null
+        longestLeg.plannedDuration > duration -> longestLeg
+        else -> null
+    }
+}
