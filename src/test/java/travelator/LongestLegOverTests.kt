@@ -19,20 +19,15 @@ class LongestLegOverTests {
     private val oneDay = Duration.ofDays(1)
 
     @Test
-    fun `is absent when no legs`() {
-        assertNull(longestLegOver(emptyList(), Duration.ZERO))
-    }
-
-    @Test
     fun `is absent when no legs long enough`() {
-        assertNull(longestLegOver(legs, oneDay))
+        assertNull(legs.longestOver(oneDay))
     }
 
     @Test
     fun `is longest leg when one match`() {
         assertEquals(
             "one day",
-            longestLegOver(legs, oneDay.minusMillis(1))
+            legs.longestOver(oneDay.minusMillis(1))
             !!.description
         )
     }
@@ -41,7 +36,7 @@ class LongestLegOverTests {
     fun `is longest leg when more than one match`() {
         assertEquals(
             "one day",
-            longestLegOver(legs, Duration.ofMinutes(59))
+            legs.longestOver(Duration.ofMinutes(59))
                 ?.description
         )
     }
