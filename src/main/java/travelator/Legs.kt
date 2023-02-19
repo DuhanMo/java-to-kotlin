@@ -17,4 +17,4 @@ fun longestLegOver(legs: List<Leg>, duration: Duration): Leg? {
 }
 
 private fun Leg.isLongerThan(duration: Duration) =
-    plannedDuration.compareTo(duration) > 0
+    plannedDuration > duration
