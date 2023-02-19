@@ -1,15 +1,12 @@
 package travelator
 
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Test
-import travelator.Legs.findLongestLegOver
-import travelator.Legs.longestLegOver
 import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.time.ZonedDateTime
-import java.util.*
 import java.util.List
 import java.util.concurrent.ThreadLocalRandom
 
