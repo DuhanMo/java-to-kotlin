@@ -15,22 +15,22 @@ public class PreferencesView extends View {
     }
 
     public void show() {
-        greetingPicker.setGreeting(preferences.getGreeting());
-        localePicker.setLocale(preferences.getLocale());
-        currencyPicker.setCurrency(preferences.getCurrency());
+        greetingPicker.setGreeting(preferences.greeting);
+        localePicker.setLocale(preferences.locale);
+        currencyPicker.setCurrency(preferences.currency);
         super.show();
     }
 
     protected void onGreetingChange() {
-        preferences.setGreeting(greetingPicker.getGreeting());
+        preferences.greeting = greetingPicker.getGreeting();
     }
 
     protected void onLocaleChange() {
-        preferences.setLocale(localePicker.getLocale());
+        preferences.locale = localePicker.getLocale();
     }
 
     protected void onCurrencyChange() {
-        preferences.setCurrency(currencyPicker.getCurrency());
+        preferences.currency = currencyPicker.getCurrency();
     }
 }
 
