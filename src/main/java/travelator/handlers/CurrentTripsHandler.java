@@ -5,6 +5,8 @@ import travelator.ITrackTrips;
 import travelator.http.Request;
 import travelator.http.Response;
 
+import java.time.Instant;
+
 import static java.net.HttpURLConnection.*;
 
 public class CurrentTripsHandler {
@@ -22,7 +24,7 @@ public class CurrentTripsHandler {
                     .findFirst();
             if (customerId.isEmpty())
                 return new Response(HTTP_BAD_REQUEST);
-            var currentTrip = tracking.currentTripFor(customerId.get());
+            var currentTrip = tracking.currentTripFor(customerId.get(), Instant.now());
             return currentTrip.isPresent() ?
                     new Response(HTTP_OK,
                             objectMapper.writeValueAsString(currentTrip)) :
