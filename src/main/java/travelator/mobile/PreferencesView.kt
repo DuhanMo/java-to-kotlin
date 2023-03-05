@@ -1,71 +1,43 @@
-package travelator.mobile;
+package travelator.mobile
 
-import java.util.Currency;
-import java.util.Locale;
+import java.util.*
 
-public class PreferencesView extends View {
+class PreferencesView(
+    private val preferences: UserPreferences
+) : View() {
+    private val greetingPicker = GreetingPicker()
+    private val localePicker = LocalePicker()
+    private val currencyPicker = CurrencyPicker()
 
-    private final UserPreferences preferences;
-    private final GreetingPicker greetingPicker = new GreetingPicker();
-    private final LocalePicker localePicker = new LocalePicker();
-    private final CurrencyPicker currencyPicker = new CurrencyPicker();
-
-    public PreferencesView(UserPreferences preferences) {
-        this.preferences = preferences;
+    fun showModal(): UserPreferences {
+        greetingPicker.greeting = preferences.greeting
+        localePicker.locale = preferences.locale
+        currencyPicker.currency = preferences.currency
+        show()
+        return preferences
     }
 
-    public void show() {
-        greetingPicker.setGreeting(preferences.greeting);
-        localePicker.setLocale(preferences.locale);
-        currencyPicker.setCurrency(preferences.currency);
-        super.show();
+    protected fun onGreetingChange() {
+        preferences.greeting = greetingPicker.greeting
     }
 
-    protected void onGreetingChange() {
-        preferences.greeting = greetingPicker.getGreeting();
+    protected fun onLocaleChange() {
+        preferences.locale = localePicker.locale
     }
 
-    protected void onLocaleChange() {
-        preferences.locale = localePicker.getLocale();
-    }
-
-    protected void onCurrencyChange() {
-        preferences.currency = currencyPicker.getCurrency();
+    protected fun onCurrencyChange() {
+        preferences.currency = currencyPicker.currency
     }
 }
 
-class GreetingPicker {
-    private String greeting;
-
-    public String getGreeting() {
-        return greeting;
-    }
-
-    public void setGreeting(String greeting) {
-        this.greeting = greeting;
-    }
+internal class GreetingPicker {
+    var greeting: String = ""
 }
 
-class LocalePicker {
-    private Locale locale;
-
-    public Locale getLocale() {
-        return locale;
-    }
-
-    public void setLocale(Locale locale) {
-        this.locale = locale;
-    }
+internal class LocalePicker {
+    var locale: Locale = Locale.UK
 }
 
-class CurrencyPicker {
-    private Currency currency;
-
-    public Currency getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(Currency currency) {
-        this.currency = currency;
-    }
+internal class CurrencyPicker {
+    var currency: Currency = Currency.getInstance(Locale.UK)
 }
