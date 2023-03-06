@@ -1,44 +1,36 @@
-package travelator;
+package travelator
 
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Stream;
+import java.util.*
+import java.util.Comparator.comparing
+import java.util.Comparator.comparingDouble
+import java.util.stream.Collectors.toUnmodifiableList
+import java.util.stream.Stream
 
-import static java.util.Comparator.comparing;
-import static java.util.Comparator.comparingDouble;
-import static java.util.stream.Collectors.toUnmodifiableList;
+fun <T> sorted(shortlist: List<T>, ordering: Comparator<in T>): List<T> {
+    return shortlist.stream().sorted(ordering)
+        .collect(toUnmodifiableList())
+}
 
-public class Shortlists {
-    public static <T> List<T> sorted(
-            List<T> shortlist,
-            Comparator<? super T> ordering
-    ) {
-        return shortlist.stream()
-                .sorted(ordering)
-                .collect(toUnmodifiableList());
-    }
+fun <T> removeItemAt(shortlist: List<T>, index: Int): List<T> {
+    return Stream.concat(
+        shortlist.stream().limit(index.toLong()),
+        shortlist.stream().skip((index + 1).toLong())
+    ).collect(toUnmodifiableList())
+}
 
-    public static <T> List<T> removeItemAt(List<T> shortlist, int index) {
-        return Stream.concat(
-                shortlist.stream().limit(index),
-                shortlist.stream().skip(index + 1)
-        ).collect(toUnmodifiableList());
-    }
+fun byRating(): Comparator<HasRating> {
+    return comparingDouble(HasRating::rating).reversed()
+}
 
-    public static Comparator<HasRating> byRating() {
-        return comparingDouble(HasRating::getRating).reversed();
-    }
+fun byPriceLowToHigh(): Comparator<HasPrice> {
+    return comparing(HasPrice::price)
+}
 
-    public static Comparator<HasPrice> byPriceLowToHigh() {
-        return comparing(HasPrice::getPrice);
-    }
 
-    public static <T extends HasPrice & HasRating> Comparator<T> byValue() {
-        return comparingDouble((T t) -> t.getRating() / t.getPrice()).reversed();
-    }
+fun <T> byValue(): Comparator<T> where T : HasPrice, T : HasRating {
+    return comparingDouble { t: T -> t.rating / t.price }.reversed()
+}
 
-    public static Comparator<HasRelevance> byRelevance() {
-        return comparingDouble(HasRelevance::getRelevance).reversed();
-    }
+fun byRelevance(): Comparator<HasRelevance> {
+    return comparingDouble(HasRelevance::relevance).reversed()
 }
