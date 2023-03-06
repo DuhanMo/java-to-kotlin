@@ -8,7 +8,7 @@ import travelator.byPriceLowToHigh
 import travelator.byRating
 import travelator.byRelevance
 import travelator.byValue
-import travelator.removeItemAt
+import travelator.withoutItemAt
 import travelator.sorted
 
 class ShortlistScenarioTest {
@@ -49,7 +49,7 @@ class ShortlistScenarioTest {
         show(hotelsByPrice, "By Price (low to high)")
 
         println("Rejecting: ${hotelsByPrice[0].name}")
-        val desirableHotels = hotelsByPrice.removeItemAt(0)
+        val desirableHotels = hotelsByPrice.withoutItemAt(0)
         show(desirableHotels, "Remaining shortlist")
 
         val desirableHotelsByRating = desirableHotels.sorted(byRating())
