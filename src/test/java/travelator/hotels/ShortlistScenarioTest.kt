@@ -49,7 +49,7 @@ class ShortlistScenarioTest {
         show(hotelsByPrice, "By Price (low to high)")
 
         println("Rejecting: ${hotelsByPrice[0].name}")
-        val desirableHotels = removeItemAt(hotelsByPrice, 0)
+        val desirableHotels = hotelsByPrice.removeItemAt(0)
         show(desirableHotels, "Remaining shortlist")
 
         val desirableHotelsByRating = desirableHotels.sorted(byRating())
