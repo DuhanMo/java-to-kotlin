@@ -9,12 +9,10 @@ data class EmailAddress(
 
     companion object {
         fun parse(value: String): EmailAddress =
-            emailAddress(value, value.lastIndexOf('@'))
-
-        private fun emailAddress(value: String, atIndex: Int): EmailAddress =
-            if ((atIndex < 1 || atIndex == value.length - 1)) {
-                throw IllegalArgumentException("EmailAddress must be two parts separated by @")
-            } else {
+            value.lastIndexOf('@').let { atIndex ->
+                require(!(atIndex < 1 || atIndex == value.length - 1)) {
+                    "EmailAddress must be two parts separated by @"
+                }
                 EmailAddress(
                     value.substring(0, atIndex),
                     value.substring(atIndex + 1)
