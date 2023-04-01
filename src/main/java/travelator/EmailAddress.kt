@@ -9,14 +9,17 @@ data class EmailAddress(
 
     companion object {
         fun parse(value: String): EmailAddress =
-            value.lastIndexOf('@').let { atIndex ->
-                require(!(atIndex < 1 || atIndex == value.length - 1)) {
-                    "EmailAddress must be two parts separated by @"
+            value.splitAroundLast('@')
+                .let { (leftPart, rightPart) ->
+                    EmailAddress(leftPart, rightPart)
                 }
-                EmailAddress(
-                    value.substring(0, atIndex),
-                    value.substring(atIndex + 1)
-                )
+
+        private fun String.splitAroundLast(divider: Char): Pair<String, String> =
+            lastIndexOf(divider).let { atIndex ->
+                require(!(atIndex < 1 || atIndex == length - 1)) {
+                    "EmailAddress must be two parts separated by $divider"
+                }
+                substring(0, atIndex) to substring(atIndex + 1)
             }
     }
 }
