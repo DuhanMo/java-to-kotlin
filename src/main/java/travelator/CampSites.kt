@@ -1,21 +1,14 @@
-package travelator;
+package travelator
 
-import java.util.Set;
-
-import static java.util.stream.Collectors.toUnmodifiableSet;
-
-public class CampSites {
-
-    public static Set<CampSite> sitesInRegion(
-            Set<CampSite> sites,
-            String countryISO,
-            String region
-    ) {
-        return sites.stream()
-                .filter(campSite ->
-                        campSite.getCountryCode().equals(countryISO) &&
-                                campSite.region().equalsIgnoreCase(region)
-                )
-                .collect(toUnmodifiableSet());
-    }
+fun Iterable<CampSite>.sitesInRegion(
+    countryISO: String,
+    region: String?
+): Set<CampSite> {
+    return filter { site ->
+        site.isIn(countryISO, region)
+    }.toSet()
 }
+
+private fun CampSite.isIn(countryISO: String, region: String? = null) =
+    countryCode == countryISO &&
+            region?.equals(this.region, ignoreCase = true) ?: true
