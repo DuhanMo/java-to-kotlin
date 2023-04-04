@@ -23,18 +23,22 @@ class Money private constructor(
         return amount.toString() + " " + currency.currencyCode
     }
 
-    fun add(that: Money): Money {
+    fun add(that: Money) = this + that
+
+    operator fun plus(that: Money): Money {
         require(currency == that.currency) { "cannot add Money values of different currencies" }
         return Money(amount.add(that.amount), currency)
     }
 
     companion object {
-        fun of(amount: BigDecimal, currency: Currency): Money {
-            return Money(
+        fun of(amount: BigDecimal, currency: Currency) =
+            this(amount, currency)
+
+        operator fun invoke(amount: BigDecimal, currency: Currency) =
+            Money(
                 amount.setScale(currency.defaultFractionDigits),
                 currency
-            )
-        }
+            ) // invoke를 재귀호출하는게 아니라 비공개 생성자 Money를 만든다.
 
         fun of(amountStr: String?, currency: Currency): Money {
             return of(BigDecimal(amountStr), currency)
